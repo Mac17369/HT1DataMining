@@ -1,0 +1,208 @@
+---
+title: "Problemas 1-4_3"
+author: "Pablo Noack"
+date: "2/2/2021"
+output: word_document
+---
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(nortest)
+data <-read.csv("C:/Users/LENOVO/Desktop/Clases/Minería de datos/HT/HT1DataMining/data/tmdb-movies.csv")
+```  
+# Haga una exploración rápida de sus datos,para eso haga un resumen de su conjunto de datos.
+
+## Solución:  
+```{r  }
+summary(data)
+```  
+# Diga el tipo de cada una de las variables(cualitativaordinal o nominal, cuantitativa continua, cuantitativa discreta)  
+## Solucion
+
+```{r }
+str(data)
+```
+# Investigue si las variables cuantitativas siguen una distribución normal y haga una tabla de frecuencias de las variables cualitativas. Explique todos los resultados. 
+## Solución:  
+Antes que todo, es importante remarcar que las variables id, imbd_id, original_title, cast, tagline y overview, son meras variables cuantitativas que no exiben ningún comportamiento  estadístico. Por ejemplo,  si hicieramos una tabla de  frecuencias o un test de normalidad estas variables no exibirían ningún comportamiento debido a que son etiquetas para cada película.
+
+### Variables cuantitativas.
+
+#### Popularidad: 
+
+* Histograma: muestra un sesgo hacia el 0, esto implica que la mayoría de películas que salen al cine no son reconocidas y son muy pocas las que triunfan.Por otro lado, no muestra la simetría que cabría esperar de una distribución normal. 
+```{r}
+hist(data$popularity[data$popularity != 0],
+     main = "Histograma sobre popularidad de películas en imdb",
+     xlab = "Indice de popularidad ",
+     breaks = 105)
+```
+
+
+* QQnormal: dado ese comportamiento y el sesgo que tienen los datos, se aplicó una gráfica de qqnorm.En la que se oberva que los extremos no se comportan de manera normal.  
+
+```{r }
+qqnorm(data$popularity, pch = 1, frame = FALSE)
+qqline(data$popularity, col = "steelblue", lwd = 2)
+
+```
+
+
+* Test de Lilliefors: tenemos que el valor p es menor a 0.05 con lo que se confirma que la popularidad **No exibe un comportamiento normal**  
+
+```{r}
+lillie.test((data$popularity))
+```
+
+
+
+
+#### Presupuesto 
+Para el estudio de estos datos, se analizaron películas que hayan costado más de $1,000,000 USD debido a que se detectaron 2 escalas distintas en el set de datos. Además de esto no se sabe si la escala fue cambiada alguna otra vez. 
+* Histograma: En el histograma nos damos cuenta que esta no sigue ninguna distribución de normalidad, nos damos cuenta que no posee simetría. 
+
+```{r}
+data2 = data[data$budget > 1000000,]
+hist(data2$budget,
+     main = "Histograma para el presupuesto de las películas",
+     xlab = "Presupuesto",
+     breaks = 105)
+```
+
+
+
+* QQnormal: dado ese comportamiento y el sesgo que tienen los datos, se aplicó una gráfica de qqnorm.En la que se oberva que los extremos no se comportan de manera normal.  
+```{r }
+qqnorm(data2$budget, pch = 1, frame = FALSE)
+qqline(data2$budget, col = "steelblue", lwd = 2)
+
+```
+
+
+
+* Test de Lilliefors: tenemos que el valor p es menor a 0.05 con lo que se confirma que la popularidad **No exibe un comportamiento normal**  
+
+```{r}
+lillie.test((data2$budget))
+```
+
+#### Ganancias  
+Para el estudio de estos datos, se analizaron películas que hayan ganado más de $1,000,000 USD debido a que se detectaron 2 escalas distintas en el set de datos. Además de esto no se sabe si la escala fue cambiada alguna otra vez. 
+
+* Histograma: En el histograma nos damos cuenta que esta no sigue ninguna distribución de normalidad, nos damos cuenta que no posee simetría. 
+```{r}
+data21 = data[data$revenue > 1000000,]
+hist(data21$budget,
+     main = "Histograma para las ganancias de las películas",
+     xlab = "Presupuesto",
+     breaks = 100)
+```
+
+
+* QQnormal: dado ese comportamiento y el sesgo que tienen los datos, se aplicó una gráfica de qqnorm.En la que se oberva que la distribución no se comporta de manera normal.  
+```{r }
+qqnorm(data21$revenue, pch = 1, frame = FALSE)
+qqline(data2$revenue, col = "steelblue", lwd = 2)
+
+```
+#### Duración
+Para estos datos se utilizaron solamente las películas que duran más  de 30 minutos, esto debido a que se observó que la base de datos no se solo peliculas, sino que también cortos y en ciertos casos se toma como la duración del corto como 0.Es por esto que, con el fin de evitar utilizar datos de películas con longitud de 0 minutos, se utilizó la cota inferior de 30 minutos. De cualquier forma, esto hace que los datos pasen de 10866 a 10625. Por lo que se considera que no afecta al estudio de la población. 
+
+*Histograma: Podemos darnos cuenta  que en este caso el tiempo parece comportarse con normalidad, como uno cabría esperar ya que, según nuestra experiencia la mayoría de películas rondan la hora y media. Esto nos lo comprueba el analisis exploratorio del punto 1. Donde el tiempo promedio es de 102 minutos (1hr y 42 minutos).
+
+```{r}
+data3 = data[data$runtime > 30,]
+hist(data2$runtime,
+     main = "Histograma para la duración de las películas",
+     xlab = "Tiempo (m)",
+     breaks = 105)
+```
+
+# Variables cualitativas: 
+
+### Generos: 
+
+* Tabla de frecuencias; en la tabla nos podemos dar cuenta que el programa no es capaz de organizar todos los generos debido a la gran cantidad  que hay. Sin embargo es suficiente para mostrar que los géneros más populares son el drama,acción y trhiller. 
+
+```{r}
+splitPopGenres <- c(data$genres)
+
+splitPopGenres <- strsplit(splitPopGenres, "|", fixed = TRUE)
+
+splitPopGenres <- unlist(splitPopGenres)
+
+splitPopGenres <- table(splitPopGenres)
+
+barplot(splitPopGenres, xlab = 'Frecuencia', main = ' Generos' )
+```
+
+### Directores.  
+
+* Tabla de frecuencias; en la tabla nos podemos dar cuenta que el programa no es capaz de organizar todos los generos debido a la gran cantidad  que hay. Sin embargo, podemos darnos cuenta que la mayoría de directores no pasan delas 10 películas, además, solamente 3 directores han hecho más de 30 películas y solamente 2 directores han hecho más de 40 películas. 
+
+```{r}
+directores = c(data$director)
+directores <- unlist(directores)
+directores <- table(directores)
+
+barplot(directores, xlab = 'Frecuencia', main = ' directores' )
+```
+
+### Compañias de producción 
+
+
+ * Tabla de frecuencias; en la tabla nos podemos dar cuenta que el programa no es capaz de organizar todas las compañias debido a la gran cantidad  que hay. Sin embargo, podemos darnos cuenta que todas las compañias de pelícuas no pasan de las 100 y solamente una llega a superar la marca de las 1000 películas. 
+
+```{r}
+production_companies = c(data$production_companies)
+production_companies <- unlist(production_companies)
+production_companies <- table(production_companies)
+
+barplot(production_companies, xlab = 'Frecuencia', main = ' Compañias de producción' )
+```
+
+
+### Elenco 
+
+
+ * Tabla de frecuencias; en la tabla nos podemos dar cuenta que el programa no es capaz de organizar todas las compañias debido a la gran cantidad  que hay. Sin embargo, podemos darnos cuenta que son muy pocos los actores que súperan las 50 películas. Este es un dato entendible tomando en cuenta que muchos actores hacen una película por año, o bien, hacen varias al mismo tiempo con fechas de estreno en años a futuro. 
+
+```{r}
+splitcasts <- c(data$cast)
+
+splitcasts <- strsplit(splitcasts, "|", fixed = TRUE)
+
+splitcasts <- unlist(splitcasts)
+
+splitcasts <- table(splitcasts)
+
+barplot(splitcasts, xlab = 'Frecuencia', main = 'Actores' )
+
+```
+
+
+# Responda las siguientes preguntas . 
+
+## Cúales son las películas que costaron más presupuesto?
+
+Las películas con más presupuesto fueron:
+
+```{r}
+data5 <- data[order(-data$budget),]
+head(data5$original_title,10)
+```
+
+## ¿Cuáles son las 10 películas que más ingresos tuvieron?  
+
+Las películas que más recaudaron fueron:
+
+```{r}
+data6 <- data[order(-data$revenue),]
+head(data6$original_title,10)
+```
