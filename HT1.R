@@ -1,8 +1,8 @@
 
 library(nortest)
-data <-read.csv("C:/Users/LENOVO/Desktop/Clases/Minería de datos/HT/HT1DataMining/data/tmdb-movies.csv")
+data <-read.csv("C:/Users/LENOVO/Desktop/Clases/Minerï¿½a de datos/HT/HT1DataMining/data/tmdb-movies.csv")
 
-# Haga una exploración rápida de sus datos,para eso haga un resumen de su conjunto de datos.
+# Haga una exploraciï¿½n rï¿½pida de sus datos,para eso haga un resumen de su conjunto de datos.
 
 summary(data)
 
@@ -12,9 +12,9 @@ summary(data)
 {r }
 str(data)
 
-# Investigue si las variables cuantitativas siguen una distribución normal y haga una tabla de frecuencias de las variables cualitativas. Explique todos los resultados. 
-## Solución:  
-#Antes que todo, es importante remarcar que las variables id, imbd_id, original_title, cast, tagline y overview, son meras variables cuantitativas que no exiben ningún comportamiento  estadístico. Por ejemplo,  si hicieramos una tabla de  frecuencias o un test de normalidad estas variables no exibirían ningún comportamiento debido a que son etiquetas para cada película.
+# Investigue si las variables cuantitativas siguen una distribuciï¿½n normal y haga una tabla de frecuencias de las variables cualitativas. Explique todos los resultados. 
+## Soluciï¿½n:  
+#Antes que todo, es importante remarcar que las variables id, imbd_id, original_title, cast, tagline y overview, son meras variables cuantitativas que no exiben ningï¿½n comportamiento  estadï¿½stico. Por ejemplo,  si hicieramos una tabla de  frecuencias o un test de normalidad estas variables no exibirï¿½an ningï¿½n comportamiento debido a que son etiquetas para cada pelï¿½cula.
 
 ### Variables cuantitativas.
 
@@ -22,7 +22,7 @@ str(data)
 
 
 hist(data$popularity[data$popularity != 0],
-     main = "Histograma sobre popularidad de películas en imdb",
+     main = "Histograma sobre popularidad de pelï¿½culas en imdb",
      xlab = "Indice de popularidad ",
      breaks = 105)
 
@@ -33,7 +33,7 @@ lillie.test((data$popularity))
 #### Presupuesto 
 data2 = data[data$budget > 1000000,]
 hist(data2$budget,
-     main = "Histograma para el presupuesto de las películas",
+     main = "Histograma para el presupuesto de las pelï¿½culas",
      xlab = "Presupuesto",
      breaks = 105)
 
@@ -44,17 +44,17 @@ lillie.test((data2$budget))
 #### Ganancias 
 data21 = data[data$revenue > 1000000,]
 hist(data21$budget,
-     main = "Histograma para las ganancias de las películas",
+     main = "Histograma para las ganancias de las pelï¿½culas",
      xlab = "Presupuesto",
      breaks = 100)
 qqnorm(data21$revenue, pch = 1, frame = FALSE)
 qqline(data2$revenue, col = "steelblue", lwd = 2)
 
-#### Duración
+#### Duraciï¿½n
 
 data3 = data[data$runtime > 30,]
 hist(data2$runtime,
-     main = "Histograma para la duración de las películas",
+     main = "Histograma para la duraciï¿½n de las pelï¿½culas",
      xlab = "Tiempo (m)",
      breaks = 105)
 
@@ -78,13 +78,13 @@ directores <- table(directores)
 
 barplot(directores, xlab = 'Frecuencia', main = ' directores' )
 
-###Compañias de producción 
+###Compaï¿½ias de producciï¿½n 
 
 production_companies = c(data$production_companies)
 production_companies <- unlist(production_companies)
 production_companies <- table(production_companies)
 
-barplot(production_companies, xlab = 'Frecuencia', main = ' Compañias de producción' )
+barplot(production_companies, xlab = 'Frecuencia', main = ' Compaï¿½ias de producciï¿½n' )
 
 
 ### Elenco 
@@ -100,12 +100,12 @@ barplot(splitcasts, xlab = 'Frecuencia', main = 'Actores' )
 
 # Responda las siguientes preguntas . 
 
-## Cúales son las películas que costaron más presupuesto?
+## Cï¿½ales son las pelï¿½culas que costaron mï¿½s presupuesto?
 
 data5 <- data[order(-data$budget),]
 head(data5$original_title,10)
 
-## ¿Cuáles son las 10 películas que más ingresos tuvieron?  
+## ï¿½Cuï¿½les son las 10 pelï¿½culas que mï¿½s ingresos tuvieron?  
 
   
 
@@ -114,7 +114,7 @@ head(data6$original_title,10)
 
 
 #setwd("C:/Users/Kevin Macario/Desktop/Uvg/9no Semestre/Mineria de Datos/HT1DataMining/data")
-movies <- read.csv('D:/AxelFolder/University/Minería de Datos/HT1DataMining/data/tmdb-movies.csv')
+movies <- read.csv('D:/AxelFolder/University/Minerï¿½a de Datos/HT1DataMining/data/tmdb-movies.csv')
 show(movies)
 
 library(tidyr)
@@ -172,3 +172,35 @@ lessRevenue <- cleanMov[order(revenue),]
 lessRevenue <- head(lessRevenue, 20)
 select(lessRevenue, original_title, revenue, primary_genre)
 
+movies<-read.csv("D:/AxelFolder/University/MinerÃ­a de Datos/HT1DataMining/data/tmdb-movies.csv")
+#4.10
+directores <- movies[!is.na(movies$director), ]
+directores <-  directores[!directores$director == "",]
+directores <- directores[order(-directores$vote_average), ]
+directores <- head(directores, 20)
+tabla_directores <- directores[c("director", "vote_average")]
+names(tabla_directores) <- c("Director", "CalificaciÃ³n")
+View(tabla_directores)
+#4.11
+correlacion <- movies[c("budget", "revenue")]
+library(psych)
+pairs.panels(correlacion)
+#4.12
+library(lubridate)
+movies$month <- vapply(strsplit(movies$release_date, "/"), `[`, 1, FUN.VALUE=character(1))
+asociacion <- movies[c("month", "revenue")]
+pairs.panels(asociacion)
+#4.13
+library(plyr)
+lanzamientos <- count(movies, "month")
+lanzamientos <- lanzamientos[order(-lanzamientos$month), ]
+names(lanzamientos) <- c("Mes", "Lanzamientos")
+View(lanzamientos)
+#4.14
+correlacion1 <- movies[c("vote_average", "revenue")]
+library(psych)
+pairs.panels(correlacion1)
+#4.15
+duracion <- aggregate(duracion$runtime, by=list(Genero=duracion$genres), sum)
+duracion <- duracion[order(-duracion$x), ]
+names(duracion) <- c("Genero", "DuraciÃ³n")
