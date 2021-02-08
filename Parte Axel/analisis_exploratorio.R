@@ -1,6 +1,5 @@
 movies<-read.csv("D:/AxelFolder/University/Minería de Datos/HT1DataMining/data/tmdb-movies.csv")
 View(movies)
-str(movies)
 #4.10
 directores <- movies[!is.na(movies$director), ]
 directores <-  directores[!directores$director == "",]
