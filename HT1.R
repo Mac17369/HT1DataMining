@@ -1,5 +1,5 @@
-setwd("C:/Users/Kevin Macario/Desktop/Uvg/9no Semestre/Mineria de Datos/HT1DataMining/data")
-movies <- read.csv('tmdb-movies.csv')
+#setwd("C:/Users/Kevin Macario/Desktop/Uvg/9no Semestre/Mineria de Datos/HT1DataMining/data")
+movies <- read.csv('D:/AxelFolder/University/Minería de Datos/HT1DataMining/data/tmdb-movies.csv')
 show(movies)
 
 library(tidyr)
