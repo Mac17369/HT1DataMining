@@ -2,17 +2,17 @@
 library(nortest)
 data <-read.csv("C:/Users/LENOVO/Desktop/Clases/Miner�a de datos/HT/HT1DataMining/data/tmdb-movies.csv")
 
-# Haga una exploraci�n r�pida de sus datos,para eso haga un resumen de su conjunto de datos.
+# 1. Haga una exploraci�n r�pida de sus datos,para eso haga un resumen de su conjunto de datos.
 
 summary(data)
 
-# Diga el tipo de cada una de las variables(cualitativaordinal o nominal, cuantitativa continua, cuantitativa discreta)  
+# 2. Diga el tipo de cada una de las variables(cualitativaordinal o nominal, cuantitativa continua, cuantitativa discreta)  
 ## Solucion
 
 {r }
 str(data)
 
-# Investigue si las variables cuantitativas siguen una distribuci�n normal y haga una tabla de frecuencias de las variables cualitativas. Explique todos los resultados. 
+# 3. Investigue si las variables cuantitativas siguen una distribuci�n normal y haga una tabla de frecuencias de las variables cualitativas. Explique todos los resultados. 
 ## Soluci�n:  
 #Antes que todo, es importante remarcar que las variables id, imbd_id, original_title, cast, tagline y overview, son meras variables cuantitativas que no exiben ning�n comportamiento  estad�stico. Por ejemplo,  si hicieramos una tabla de  frecuencias o un test de normalidad estas variables no exibir�an ning�n comportamiento debido a que son etiquetas para cada pel�cula.
 
@@ -98,14 +98,14 @@ splitcasts <- table(splitcasts)
 
 barplot(splitcasts, xlab = 'Frecuencia', main = 'Actores' )
 
-# Responda las siguientes preguntas . 
+# 4. Responda las siguientes preguntas . 
 
-## C�ales son las pel�culas que costaron m�s presupuesto?
+## 4.1 C�ales son las pel�culas que costaron m�s presupuesto?
 
 data5 <- data[order(-data$budget),]
 head(data5$original_title,10)
 
-## �Cu�les son las 10 pel�culas que m�s ingresos tuvieron?  
+## 4.2 �Cu�les son las 10 pel�culas que m�s ingresos tuvieron?  
 
   
 
