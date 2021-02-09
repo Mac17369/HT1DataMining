@@ -1,22 +1,22 @@
 
 library(nortest)
 ##Obteniendo la data
-data <-read.csv("C:/Users/LENOVO/Desktop/Clases/Minerï¿½a de datos/HT/HT1DataMining/data/tmdb-movies.csv")
+data <-read.csv("C:/Users/LENOVO/Desktop/Clases/Miner???a de datos/HT/HT1DataMining/data/tmdb-movies.csv")
 
-# 1. Haga una exploraciï¿½n rï¿½pida de sus datos,para eso haga un resumen de su conjunto de datos.
+# 1. Haga una exploraci???n r???pida de sus datos,para eso haga un resumen de su conjunto de datos.
 summary(data)
 
 # 2. Diga el tipo de cada una de las variables(cualitativaordinal o nominal, cuantitativa continua, cuantitativa discreta)  
 ## Solucion
 str(data)
 
-# 3. Investigue si las variables cuantitativas siguen una distribuciï¿½n normal y haga una tabla de frecuencias de las variables cualitativas. Explique todos los resultados. 
-## Soluciï¿½n:  
-#Antes que todo, es importante remarcar que las variables id, imbd_id, original_title, cast, tagline y overview, son meras variables cuantitativas que no exiben ningï¿½n comportamiento  estadï¿½stico. Por ejemplo,  si hicieramos una tabla de  frecuencias o un test de normalidad estas variables no exibirï¿½an ningï¿½n comportamiento debido a que son etiquetas para cada pelï¿½cula.
+# 3. Investigue si las variables cuantitativas siguen una distribuci???n normal y haga una tabla de frecuencias de las variables cualitativas. Explique todos los resultados. 
+## Soluci???n:  
+#Antes que todo, es importante remarcar que las variables id, imbd_id, original_title, cast, tagline y overview, son meras variables cuantitativas que no exiben ning???n comportamiento  estad???stico. Por ejemplo,  si hicieramos una tabla de  frecuencias o un test de normalidad estas variables no exibir???an ning???n comportamiento debido a que son etiquetas para cada pel???cula.
 ### Variables cuantitativas.
 #### Popularidad: 
 hist(data$popularity[data$popularity != 0],
-     main = "Histograma sobre popularidad de pelï¿½culas en imdb",
+     main = "Histograma sobre popularidad de pel???culas en imdb",
      xlab = "Indice de popularidad ",
      breaks = 105)
 
@@ -27,7 +27,7 @@ lillie.test((data$popularity))
 #### Presupuesto 
 data2 = data[data$budget > 1000000,]
 hist(data2$budget,
-     main = "Histograma para el presupuesto de las pelï¿½culas",
+     main = "Histograma para el presupuesto de las pel???culas",
      xlab = "Presupuesto",
      breaks = 105)
 
@@ -38,16 +38,16 @@ lillie.test((data2$budget))
 #### Ganancias 
 data21 = data[data$revenue > 1000000,]
 hist(data21$budget,
-     main = "Histograma para las ganancias de las pelï¿½culas",
+     main = "Histograma para las ganancias de las pel???culas",
      xlab = "Presupuesto",
      breaks = 100)
 qqnorm(data21$revenue, pch = 1, frame = FALSE)
 qqline(data2$revenue, col = "steelblue", lwd = 2)
 
-#### Duraciï¿½n
+#### Duraci???n
 data3 = data[data$runtime > 30,]
 hist(data2$runtime,
-     main = "Histograma para la duraciï¿½n de las pelï¿½culas",
+     main = "Histograma para la duraci???n de las pel???culas",
      xlab = "Tiempo (m)",
      breaks = 105)
 
@@ -65,12 +65,12 @@ directores <- unlist(directores)
 directores <- table(directores)
 barplot(directores, xlab = 'Frecuencia', main = ' directores' )
 
-###Compaï¿½ias de producciï¿½n 
+###Compa???ias de producci???n 
 
 production_companies = c(data$production_companies)
 production_companies <- unlist(production_companies)
 production_companies <- table(production_companies)
-barplot(production_companies, xlab = 'Frecuencia', main = ' Compaï¿½ias de producciï¿½n' )
+barplot(production_companies, xlab = 'Frecuencia', main = ' Compa???ias de producci???n' )
 
 
 ### Elenco 
@@ -82,112 +82,111 @@ barplot(splitcasts, xlab = 'Frecuencia', main = 'Actores' )
 
 # 4. Responda las siguientes preguntas . 
 
-## 4.1 Cï¿½ales son las pelï¿½culas que costaron mï¿½s presupuesto?
+## 4.1 C???ales son las pel???culas que costaron m???s presupuesto?
 
 data5 <- data[order(-data$budget),]
 head(data5$original_title,10)
 
-## 4.2 ï¿½Cuï¿½les son las 10 pelï¿½culas que mï¿½s ingresos tuvieron?  
+## 4.2 ???Cu???les son las 10 pel???culas que m???s ingresos tuvieron?  
 data6 <- data[order(-data$revenue),]
 head(data6$original_title,10)
 
+#Obteniendo la data 
 
-##Obteniendo la data
-movies <- read.csv('D:/AxelFolder/University/Minerï¿½a de Datos/HT1DataMining/data/tmdb-movies.csv')
+setwd("C:/Users/Kevin Macario/Desktop/Uvg/9no Semestre/Mineria de Datos/HT1DataMining/data")
+movies <- read.csv('tmdb-movies.csv')
 show(movies)
 
 library(tidyr)
 mov <- separate(movies, col = "genres", into = c("primary_genre", "secondary_genre", sep = "|"))
 
 
-# 4.3  pelicula mas votada
-maxVote <- which(movies$vote_count == max(movies$vote_count))
-movies[maxVote,]
+#4.3 pelicula mas votada
+maxVote <- movies[order(-movies$vote_count),]
+maxVote <- head(maxVote,1)
+tMaxVote <- maxVote[c("original_title","vote_count")]
+names(tMaxVote) <- c('Pelicula', 'Votos')
+tMaxVote
 
-# 4.4 pelicula peor votada
-worstMovie <- which(movies$vote_average == min(movies$vote_average))
-movies[worstMovie,]
+#4.4 pelicula peor votada
+worstMovie <- movies[order(-movies$vote_average),]
+worstMovie <- head(worstMovie,1)
+tWorstMovie <- worstMovie[c("original_title","vote_average")]
+names(tWorstMovie) <- c('Pelicula', 'Calificacion Promedio')
+tWorstMovie
 
-# 4.5 anios en los que mas se hicieron peliculas
+#4.5 anios en los que mas se hicieron peliculas
 library(RColorBrewer)
 col1 <- brewer.pal(12,'Set3')
 realiseYear <- table(movies$release_year)
 barplot(realiseYear, ylab = 'Frecuencia', main = 'Peliculas por anio', col=col1, las=3)
 
-# 4.6 20 peliculas mas populares y genero
-popMovies <- mov[order(-vote_average),]
+#4.6 20 peliculas mas populares y genero
+popMovies <- mov[order(-mov$popularity ),]
 popMovies <- head(popMovies, 20)
-popMovies <- table(popMovies$primary_genre)
-library(dplyr)
+tPopMovies <- popMovies[c("popularity", "original_title","primary_genre")]
+names(tPopMovies) <- c('Popularidad', 'Pelicuala', 'Genero principal')
+tPopMovies
 
-col2 <- brewer.pal(12,'Paired')
-barplot(popMovies, ylab = 'Frecuencia', main = 'Generos de 20 peliculas mas populares', col=col2, las=3)
-#hay una pelicula que no tiene genero registrado Dr, Who
-
-# 4.7 generos que predominan en la base de datos
+#4.7 generos que predominan en la base de datos
 #Separando generos 
 splitPopGenres <- c(movies$genres)
-splitPopGenres
 splitPopGenres <- strsplit(splitPopGenres, "|", fixed = TRUE)
-splitPopGenres
 splitPopGenres <- unlist(splitPopGenres)
-splitPopGenres
 splitPopGenres <- table(splitPopGenres)
 splitPopGenres
 
 col3 <- brewer.pal(9,'Pastel1')
-barplot(splitPopGenres, horiz = TRUE, xlab = 'Frecuencia', main = '10 Generos mas frecuentes en base de datos', col=col3, las = 1)
+barplot(splitPopGenres, horiz = TRUE, xlab = 'Frecuencia', main = 'Generos mas frecuentes en base de datos', col=col3, las = 1)
 
-# 4.8 las peliculas de que genero prinipal obtuvieron mayores ganancias
-mostRevenue <- mov[order(-revenue),]
+#4.8 las peliculas de que genero prinipal obtuvieron mayores ganancias
+mostRevenue <- mov[order(-mov$revenue),]
 mostRevenue <- head(mostRevenue, 20)
 select(mostRevenue, original_title, revenue, primary_genre)
 
-# 4.9 las peliculas de que genero prinipal obtuvieron menores ganancias
-cleanMov <- mov[mov$revenue != 0,]
-revenueOrder <- order(cleanMov$revenue)
-cleanMov <- cleanMov[revenueOrder,]
-lessRevenue <- cleanMov[order(revenue),]
-lessRevenue <- head(lessRevenue, 20)
-select(lessRevenue, original_title, revenue, primary_genre)
+#4.9 las peliculas de que genero prinipal obtuvieron menores ganancias
+budget <- mov[order(-mov$budget),]
+budget <- head(budget, 20)
+select(budget, original_title, primary_genre, budget)
+
 
 
 ##Obteniendo la data
-movies<-read.csv("D:/AxelFolder/University/MinerÃ­a de Datos/HT1DataMining/data/tmdb-movies.csv")
+movies<-read.csv("D:/AxelFolder/University/Minería de Datos/HT1DataMining/data/tmdb-movies.csv")
 
-# 4.10 Â¿QuiÃ©nes son los 20 mejores directores que hicieron pelÃ­culas altamente calificadas?
+# 4.10 ¿Quiénes son los 20 mejores directores que hicieron películas altamente calificadas?
 directores <- movies[!is.na(movies$director), ]
 directores <-  directores[!directores$director == "",]
 directores <- directores[order(-directores$vote_average), ]
 directores <- head(directores, 20)
 tabla_directores <- directores[c("director", "vote_average")]
-names(tabla_directores) <- c("Director", "CalificaciÃ³n")
+names(tabla_directores) <- c("Director", "Calificación")
 View(tabla_directores)
 
-# 4.11 Â¿CÃ³mo  se  correlacionan  los  presupuestos  con  los  ingresos?  Â¿Los  altos presupuestos  significan   altos  ingresos?  Haga  los  grÃ¡ficos  que  necesite,  histograma, diagrama de dispersiÃ³n
+# 4.11 ¿Cómo  se  correlacionan  los  presupuestos  con  los  ingresos?  ¿Los  altos presupuestos  significan   altos  ingresos?  Haga  los  gráficos  que  necesite,  histograma, diagrama de dispersión
 correlacion <- movies[c("budget", "revenue")]
 library(psych)
 pairs.panels(correlacion)
 
-# 4.12 Â¿Se asocian ciertos meses de lanzamiento con mejores ingresos?
+# 4.12 ¿Se asocian ciertos meses de lanzamiento con mejores ingresos?
 library(lubridate)
 movies$month <- vapply(strsplit(movies$release_date, "/"), `[`, 1, FUN.VALUE=character(1))
 asociacion <- movies[c("month", "revenue")]
 pairs.panels(asociacion)
 
-# 4.13 Â¿En quÃ© meses se han visto los lanzamientos mÃ¡ximos?
+# 4.13 ¿En qué meses se han visto los lanzamientos máximos?
 library(plyr)
 lanzamientos <- count(movies, "month")
 lanzamientos <- lanzamientos[order(-lanzamientos$freq), ]
 names(lanzamientos) <- c("Mes", "Lanzamientos")
 View(lanzamientos)
 
-# 4.14 Â¿CÃ³mo se correlacionan las calificaciones con el Ã©xito comercial?
+# 4.14 ¿Cómo se correlacionan las calificaciones con el éxito comercial?
 correlacion1 <- movies[c("vote_average", "revenue")]
 library(psych)
 pairs.panels(correlacion1)
 
-# 4.15 A quÃ© gÃ©neroprincipalpertenecen las pelÃ­culas mÃ¡s largas?
+# 4.15 A qué géneroprincipalpertenecen las películas más largas?
 duracion <- aggregate(duracion$runtime, by=list(Genero=duracion$genres), sum)
 duracion <- duracion[order(-duracion$x), ]
-names(duracion) <- c("Genero", "DuraciÃ³n")
+names(duracion) <- c("Genero", "Duración")
