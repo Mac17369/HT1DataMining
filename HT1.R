@@ -178,7 +178,7 @@ pairs.panels(asociacion)
 # 4.13 ¿En qué meses se han visto los lanzamientos máximos?
 library(plyr)
 lanzamientos <- count(movies, "month")
-lanzamientos <- lanzamientos[order(-lanzamientos$month), ]
+lanzamientos <- lanzamientos[order(-lanzamientos$freq), ]
 names(lanzamientos) <- c("Mes", "Lanzamientos")
 View(lanzamientos)
 
